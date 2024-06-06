@@ -1,6 +1,7 @@
 #tag WebContainerControl
 Begin WebContainer NavigationLink
    Compatibility   =   ""
+   ControlCount    =   0
    ControlID       =   ""
    Enabled         =   True
    Height          =   42
@@ -21,9 +22,11 @@ Begin WebContainer NavigationLink
    Width           =   200
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin NavigationLinkIcon LinkIcon
       Active          =   False
+      ControlCount    =   0
       ControlID       =   ""
       Enabled         =   True
       Height          =   32
@@ -182,17 +185,29 @@ End
 		Private mIconName As String = "house"
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		Tag As String
+	#tag EndProperty
+
 
 #tag EndWindowCode
 
 #tag Events ButtonCanvas
 	#tag Event
-		Sub Pressed(x as Integer, y as Integer)
+		Sub Pressed(x As Integer, y As Integer)
 		  RaiseEvent Pressed
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ControlCount"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Name"
 		Visible=true

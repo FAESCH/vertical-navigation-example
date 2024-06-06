@@ -1,6 +1,7 @@
 #tag WebContainerControl
 Begin WebContainer VerticalNavigation
    Compatibility   =   ""
+   ControlCount    =   0
    ControlID       =   ""
    Enabled         =   True
    Height          =   250
@@ -21,9 +22,11 @@ Begin WebContainer VerticalNavigation
    Width           =   250
    _mDesignHeight  =   0
    _mDesignWidth   =   0
+   _mName          =   ""
    _mPanelIndex    =   -1
    Begin WebRectangle ActiveLinkIndicator
       BackgroundColor =   &cBEBEBE00
+      ControlCount    =   0
       ControlID       =   ""
       Enabled         =   True
       HasBackgroundColor=   True
@@ -56,12 +59,13 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Sub AddLink(caption As String, icon As String, active As Boolean = False)
+		Sub AddLink(caption As String, Tag As String, icon As String, active As Boolean = False)
 		  // We will create a new NavigationLink instance
 		  // and set the properties we're receiving.
 		  Var link As New NavigationLink
 		  link.Caption = caption
 		  link.IconName = icon
+		  link.Tag = Tag
 		  
 		  // For its pressed event, we will handle it
 		  // internally in the HandleLinkPressed method.
@@ -131,6 +135,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ControlCount"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="_mPanelIndex"
 		Visible=false
