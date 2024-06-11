@@ -2,6 +2,7 @@
 Begin WebPage WebPage1
    AllowTabOrderWrap=   True
    Compatibility   =   ""
+   ControlCount    =   0
    ControlID       =   ""
    Enabled         =   False
    Height          =   400
@@ -30,9 +31,11 @@ Begin WebPage WebPage1
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
    Begin VerticalNavigation NavigationSidebar1
+      ControlCount    =   0
       ControlID       =   ""
       Enabled         =   True
       Height          =   250
+      Index           =   -2147483648
       Indicator       =   0
       LayoutDirection =   0
       LayoutType      =   0
@@ -47,6 +50,7 @@ Begin WebPage WebPage1
       Scope           =   2
       ScrollDirection =   0
       TabIndex        =   0
+      TabStop         =   True
       Tooltip         =   ""
       Top             =   20
       Visible         =   True
@@ -96,9 +100,14 @@ End
 #tag Events NavigationSidebar1
 	#tag Event
 		Sub Opening()
-		  Me.AddLink("Home", "house")
-		  Me.AddLink("Explore", "binoculars", True)
-		  Me.AddLink("Notifications", "bell")
+		  Me.AddLink("Home", "home", "house")
+		  
+		  Me.AddHeadline("Headline 1")
+		  Me.AddLink("Explore", "explore", "binoculars", True)
+		  Me.AddLink("Notifications", "notifications", "bell")
+		  
+		  Me.AddHeadline("Headline 2")
+		  Me.AddLink("Test", "test", "house")
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -108,6 +117,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="ControlCount"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="_mPanelIndex"
 		Visible=false

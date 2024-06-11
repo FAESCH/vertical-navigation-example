@@ -1,10 +1,10 @@
 #tag WebContainerControl
-Begin WebContainer VerticalNavigation
+Begin WebContainer NavigationHeadline
    Compatibility   =   ""
    ControlCount    =   0
    ControlID       =   ""
    Enabled         =   True
-   Height          =   250
+   Height          =   42
    Indicator       =   0
    LayoutDirection =   0
    LayoutType      =   0
@@ -19,186 +19,83 @@ Begin WebContainer VerticalNavigation
    TabIndex        =   0
    Top             =   0
    Visible         =   True
-   Width           =   250
+   Width           =   200
    _mDesignHeight  =   0
    _mDesignWidth   =   0
    _mPanelIndex    =   -1
-   Begin WebRectangle ActiveLinkIndicator
-      BackgroundColor =   &cBEBEBE00
-      ControlCount    =   0
+   Begin WebLabel CaptionLabel
+      Bold            =   True
       ControlID       =   ""
       Enabled         =   True
-      HasBackgroundColor=   True
-      Height          =   42
+      FontName        =   ""
+      FontSize        =   0.0
+      Height          =   32
       Index           =   -2147483648
-      Indicator       =   ""
-      LayoutDirection =   0
-      LayoutType      =   0
-      Left            =   0
-      LockBottom      =   False
+      Indicator       =   0
+      Italic          =   False
+      Left            =   5
+      LockBottom      =   True
       LockedInPosition=   False
       LockHorizontal  =   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       LockVertical    =   False
+      Multiline       =   False
+      PanelIndex      =   "0"
       Scope           =   2
       TabIndex        =   0
       TabStop         =   True
+      Text            =   "Untitled"
+      TextAlignment   =   0
+      TextColor       =   &c00000000
       Tooltip         =   ""
-      Top             =   0
+      Top             =   5
+      Underline       =   False
       Visible         =   True
-      Width           =   10
-      _mDesignHeight  =   0
-      _mDesignWidth   =   0
+      Width           =   139
       _mPanelIndex    =   -1
    End
 End
 #tag EndWebContainerControl
 
 #tag WindowCode
-	#tag Method, Flags = &h0
-		Sub AddHeadline(caption As String)
-		  // We will create a new NavigationHeadline instance
-		  // and set the properties we're receiving.
-		  Var headline As New NavigationHeadline
-		  headline.Caption = caption
-		  
-		  // We will place it programatically in  the container.
-		  
-		  Var headlineTop As Integer = NextTop + padding
-		  headline.EmbedWithin(Self, padding, headlineTop, Self.Width - padding, headline.Height)
-		  
-		  // A reference for this NavigationHeadline will be
-		  // needed later, so we will store it internally.
-		  mHeadlines.Add(headline)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub AddLink(caption As String, Tag As String, icon As String, active As Boolean = False)
-		  // We will create a new NavigationLink instance
-		  // and set the properties we're receiving.
-		  Var link As New NavigationLink
-		  link.Caption = caption
-		  link.IconName = icon
-		  link.Tag = Tag
-		  
-		  // For its pressed event, we will handle it
-		  // internally in the HandleLinkPressed method.
-		  AddHandler link.Pressed, WeakAddressOf HandleLinkPressed
-		  
-		  // We will place it programatically in  the container.
-		  Var linkTop As Integer = NextTop + padding
-		  link.EmbedWithin(Self, padding, linkTop, Self.Width - padding, link.Height)
-		  
-		  // A reference for this NavigationLink will be
-		  // needed later, so we will store it internally.
-		  mLinks.Add(link)
-		  
-		  // Finally, if the item is active, we will
-		  // handle it just like if it's been pressed
-		  // by the user.
-		  If active Then
-		    SetActiveLink(mLinks.LastIndex)
-		  End If
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub HandleLinkPressed(sender As NavigationLink)
-		  SetActiveLink(mLinks.IndexOf(sender))
-		  
-		  RaiseEvent Pressed(sender)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetActiveLink(index As Integer)
-		  // Here we will loop through the NavigationLink
-		  // references we have and enable or disable the
-		  // Active property, depending on the index
-		  // comparison.
-		  For i As Integer = 0 To mLinks.LastIndex
-		    mLinks(i).Active = i = index
-		  Next
-		  
-		  // Move the visual active indicator to the
-		  // NavigationLink position.
-		  ActiveLinkIndicator.Top = mLinks(index).Top
-		End Sub
-	#tag EndMethod
-
-
-	#tag Hook, Flags = &h0
-		Event Pressed(link As NavigationLink)
-	#tag EndHook
-
-
-	#tag Property, Flags = &h21
-		Private mHeadlines() As NavigationHeadline
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mLinks() As NavigationLink
-	#tag EndProperty
-
-	#tag ComputedProperty, Flags = &h21
+	#tag ComputedProperty, Flags = &h0
 		#tag Getter
 			Get
-			  Var HighestTop As Integer
-			  
-			  For Each link As NavigationLink In mLinks
-			    
-			    If link.Top + link.Height > HighestTop Then
-			      HighestTop = link.top + link.Height
-			    End If
-			    
-			  Next
-			  
-			  For Each headline As NavigationHeadline In mHeadlines
-			    
-			    If headline.Top + headline.Height > HighestTop Then
-			      HighestTop = headline.top + headline.Height
-			    End If
-			    
-			  Next
-			  
-			  return HighestTop
+			  Return mCaption
 			End Get
 		#tag EndGetter
-		Private NextTop As Integer
+		#tag Setter
+			Set
+			  mCaption = value
+			  CaptionLabel.Text = value
+			End Set
+		#tag EndSetter
+		Caption As String
 	#tag EndComputedProperty
 
-
-	#tag Constant, Name = padding, Type = Double, Dynamic = False, Default = \"10", Scope = Private
-	#tag EndConstant
+	#tag Property, Flags = &h21
+		Private mCaption As String = "Untitled"
+	#tag EndProperty
 
 
 #tag EndWindowCode
 
-#tag Events ActiveLinkIndicator
-	#tag Event
-		Sub Opening()
-		  Me.Style.BorderThickness = 0
-		  Me.Style.AddTransition("top", 0.2)
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag ViewBehavior
-	#tag ViewProperty
-		Name="ControlCount"
-		Visible=false
-		Group="Behavior"
-		InitialValue=""
-		Type="Integer"
-		EditorType=""
-	#tag EndViewProperty
 	#tag ViewProperty
 		Name="_mPanelIndex"
 		Visible=false
 		Group="Behavior"
 		InitialValue="-1"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="ControlCount"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
 		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
@@ -413,5 +310,13 @@ End
 		InitialValue="250"
 		Type="Integer"
 		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Caption"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="String"
+		EditorType="MultiLineEditor"
 	#tag EndViewProperty
 #tag EndViewBehavior
